@@ -13,12 +13,13 @@ import time
 
 
 def spin(msg, computation):  # <1>
-    for char in itertools.cycle('|/-\\'):  # <3>
-        status = char + ' ' + msg
-        print(status, flush=True, end='\r')
+    for char in itertools.cycle('⠇⠋⠙⠸⠴⠦'):  # <3>
+        status = f'\r{char} {msg}'
+        print(status, flush=True, end='')
         if computation.wait(.1):  # <5>
             break
-    print(' ' * len(status), end='\r')
+    blanks = ' ' * len(status)
+    print(f'\r{blanks}\r', end='')
 
 def slow_function():  # <7>
     # pretend waiting a long time for I/O

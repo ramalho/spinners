@@ -12,14 +12,15 @@ import itertools
 
 
 async def spin(msg):  # <1>
-    for char in itertools.cycle('|/-\\'):
-        status = char + ' ' + msg
-        print(status, flush=True, end='\r')
+    for char in itertools.cycle('⠇⠋⠙⠸⠴⠦'):
+        status = f'\r{char} {msg}'
+        print(status, flush=True, end='')
         try:
             await asyncio.sleep(.1)  # <2>
         except asyncio.CancelledError:  # <3>
             break
-    print(' ' * len(status), end='\r')
+    blanks = ' ' * len(status)
+    print(f'\r{blanks}\r', end='')
 
 
 async def slow_function():  # <4>
