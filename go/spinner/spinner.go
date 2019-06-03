@@ -7,18 +7,18 @@ import (
 )
 
 func spin(msg string, done <-chan bool) {
-	chars := []rune{'|', '/', '-', '\\'}
+	spinner_chars := []rune(`|/-\`)
 	i := 0
 	status := ""
-	Loop:
-	for {
+	repeat := true
+	for repeat {
 		select {
 		case <- done:
-			break Loop
+			repeat = false
 		default:
 			time.Sleep(100 * time.Millisecond)
-			char := chars[i]
-			i = (i + 1) % len(chars)
+			char := spinner_chars[i]
+			i = (i + 1) % len(spinner_chars)
 			status = fmt.Sprintf("%c %s", char, msg)
 			fmt.Printf("%s\r", status)
 		}
