@@ -11,6 +11,7 @@ defmodule Spinner do
         blanks = String.duplicate(" ", String.length(status))
         IO.write("\r#{blanks}\r")
         result
+
       nil ->
         IO.write(status)
         char_idx = rem(char_idx + 1, length(@spinner_chars))
