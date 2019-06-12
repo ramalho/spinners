@@ -3,8 +3,8 @@
 # spinner_asyncio.py
 
 # credits: Example by Luciano Ramalho inspired by
-# Michele Simionato's multiprocessing example in the python-list:
-# https://mail.python.org/pipermail/python-list/2009-February/538048.html
+# Michele Simionato's multiprocessing
+# example posted in the python-list on Feb 17 2009.
 
 # BEGIN SPINNER_ASYNCIO
 import asyncio
