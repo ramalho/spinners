@@ -4,6 +4,11 @@ Simple concurrent programming examples inspired by Michele Simionato's
 [multiprocessing example](https://standupdev.github.io/spinners/) posted in the
 [python-list](https://mail.python.org/pipermail/python-list/2009-February/author.html) on Feb 17 2009.
 
+![GIF animation showing spinning character prompt.][spinner]
+
+[spinner]: https://standupdev.github.io/spinners/spinner-50ms.gif "GIF screen capture"
+
+
 Simionato's example is like a concurrent "Hello, World!": while the main thread pretends to do some work for 3 seconds, a function displays a spinning prompt
 <i>concurrently</i>.
 
