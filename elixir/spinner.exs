@@ -15,10 +15,10 @@ defmodule Spinner do
     status = "\r#{char} #{msg}"
 
     receive do
-      {super_pid, :computed} ->
+      {supervisor_pid, :computed} ->
         blanks = String.duplicate(" ", String.length(status))
         IO.write("\r#{blanks}\r")
-        send(super_pid, :done)
+        send(supervisor_pid, :done)
     after
       @delay ->
         IO.write(status)
