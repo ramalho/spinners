@@ -8,17 +8,18 @@ import itertools
 import time
 
 
-FPS = 10  # frames per second
+DELAY = .1  # seconds
+
 
 def spin(msg, seconds):
-    steps = seconds * FPS
+    steps = seconds / DELAY
 
     for char in itertools.cycle('|/-\\'):
         status = f'\r{char} {msg}'
         print(status, flush=True, end='')
         steps -= 1
         if steps > 0:
-            time.sleep(1 / FPS)
+            time.sleep(DELAY)
         else:
             break
 

@@ -11,12 +11,15 @@ import asyncio
 import itertools
 
 
+DELAY = .1  # seconds
+
+
 async def spin(msg):  # <1>
     for char in itertools.cycle('⠇⠋⠙⠸⠴⠦'):
         status = f'\r{char} {msg}'
         print(status, flush=True, end='')
         try:
-            await asyncio.sleep(.1)  # <2>
+            await asyncio.sleep(DELAY)  # <2>
         except asyncio.CancelledError:  # <3>
             break
     blanks = ' ' * len(status)
