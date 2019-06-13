@@ -1,20 +1,31 @@
 #! /usr/bin/env elixir
 
 defmodule Spinner do
-  @spinner_chars String.graphemes("⠇⠋⠙⠸⠴⠦")
-  def spin(computation, msg, char_idx \\ 0) do
-    char = Enum.at(@spinner_chars, char_idx)
+  # milliseconds
+  @delay 100
+  def spin(computation, msg) do
+    "⠇⠋⠙⠸⠴⠦"
+    |> String.graphemes()
+    |> Stream.cycle()
+    |> spin(computation, msg)
+  end
+
+  def spin(char_stream, computation, msg) do
+    char = Enum.at(char_stream, 0)
     status = "\r#{char} #{msg}"
 
-    case Task.yield(computation, 100) do
+    case Task.yield(computation, @delay) do
       {:ok, result} ->
         blanks = String.duplicate(" ", String.length(status))
         IO.write("\r#{blanks}\r")
         result
+
       nil ->
         IO.write(status)
-        char_idx = rem(char_idx + 1, length(@spinner_chars))
-        spin(computation, msg, char_idx)
+
+        char_stream
+        |> Stream.drop(1)
+        |> spin(computation, msg)
     end
   end
 

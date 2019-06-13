@@ -1,9 +1,17 @@
 #! /usr/bin/env elixir
 
 defmodule Spinner do
-  @spinner_chars String.graphemes("⠇⠋⠙⠸⠴⠦")
-  def spin(msg, char_idx \\ 0) do
-    char = Enum.at(@spinner_chars, char_idx)
+  # milliseconds
+  @delay 100
+  def spin(msg) do
+    "⠇⠋⠙⠸⠴⠦"
+    |> String.graphemes()
+    |> Stream.cycle()
+    |> spin(msg)
+  end
+
+  def spin(char_stream, msg) do
+    char = Enum.at(char_stream, 0)
     status = "\r#{char} #{msg}"
 
     receive do
@@ -12,9 +20,12 @@ defmodule Spinner do
         IO.write("\r#{blanks}\r")
         send(super_pid, :done)
     after
-      100 ->
+      @delay ->
         IO.write(status)
-        spin(msg, rem(char_idx + 1, length(@spinner_chars)))
+
+        char_stream
+        |> Stream.drop(1)
+        |> spin(msg)
     end
   end
 

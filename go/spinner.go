@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+const delay = 100 * time.Millisecond
+
 func spin(msg string, computation <-chan bool, spinning chan<- bool) {
 	spinner_chars := []rune(`⠇⠋⠙⠸⠴⠦`)
 	i := 0
@@ -13,10 +15,10 @@ func spin(msg string, computation <-chan bool, spinning chan<- bool) {
 	repeat := true
 	for repeat {
 		select {
-		case <- computation:
+		case <-computation:
 			repeat = false
 		default:
-			time.Sleep(100 * time.Millisecond)
+			time.Sleep(delay)
 			char := spinner_chars[i]
 			i = (i + 1) % len(spinner_chars)
 			status = fmt.Sprintf("\r%c %s", char, msg)
@@ -28,7 +30,7 @@ func spin(msg string, computation <-chan bool, spinning chan<- bool) {
 }
 
 func slow_function() int {
-    time.Sleep(3 * time.Second)
+	time.Sleep(3 * time.Second)
 	return 42
 }
 
@@ -38,7 +40,7 @@ func supervisor() int {
 	go spin("thinking!", computation, spinning)
 	result := slow_function()
 	computation <- true
-	<- spinning
+	<-spinning
 	return result
 }
 
