@@ -3,12 +3,15 @@
 # spinner_asyncio.py
 
 # credits: Example by Luciano Ramalho inspired by
-# Michele Simionato's multiprocessing example in the python-list:
-# https://mail.python.org/pipermail/python-list/2009-February/538048.html
+# Michele Simionato's multiprocessing
+# example posted in the python-list on Feb 17 2009.
 
 # BEGIN SPINNER_ASYNCIO
 import asyncio
 import itertools
+
+
+DELAY = .1  # seconds
 
 
 async def spin(msg):  # <1>
@@ -16,7 +19,7 @@ async def spin(msg):  # <1>
         status = f'\r{char} {msg}'
         print(status, flush=True, end='')
         try:
-            await asyncio.sleep(.1)  # <2>
+            await asyncio.sleep(DELAY)  # <2>
         except asyncio.CancelledError:  # <3>
             break
     blanks = ' ' * len(status)

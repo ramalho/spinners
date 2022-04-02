@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> Will multithreading make python less popular?
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:python-list%40python.org?Subject=Re%3A%20Will%20multithreading%20make%20python%20less%20popular%3F&In-Reply-To=%3Cb6cdce73-0dde-4aad-a7f7-2a5253ab766a%40h16g2000yqj.googlegroups.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="525248.html">
+   <LINK REL="Next"  HREF="525288.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <span style="color: red; background-color: yellow; font-size: 13pt">
+    This is a local copy in the
+    <a href="https://github.com/standupdev/spinners/">spinners repository</a>.
+    The original message is in the
+    <a href="https://mail.python.org/pipermail/python-list/2009-February/author.html">python-list archive</a>. Most of the links below do not work.
+   </span>
+   <H1>Will multithreading make python less popular?</H1>
+    <B>Michele Simionato</B> 
+    <A HREF="mailto:python-list%40python.org?Subject=Re%3A%20Will%20multithreading%20make%20python%20less%20popular%3F&In-Reply-To=%3Cb6cdce73-0dde-4aad-a7f7-2a5253ab766a%40h16g2000yqj.googlegroups.com%3E"
+       TITLE="Will multithreading make python less popular?">michele.simionato at gmail.com
+       </A><BR>
+    <I>Tue Feb 17 05:53:39 CET 2009</I>
+    <P><UL>
+        <LI>Previous message (by thread): <A HREF="525248.html">Will multithreading make python less popular?
+</A></li>
+        <LI>Next message (by thread): <A HREF="525288.html">Will multithreading make python less popular?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#525280">[ date ]</a>
+              <a href="thread.html#525280">[ thread ]</a>
+              <a href="subject.html#525280">[ subject ]</a>
+              <a href="author.html#525280">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Feb 16, 10:20&#160;pm, <A HREF="https://mail.python.org/mailman/listinfo/python-list">rushen... at gmail.com</A> wrote:
+&gt;<i> Hi again
+</I>&gt;<i>
+</I>&gt;<i> OpenERP and ERP5 was written in python as i know. I really wonder how
+</I>&gt;<i> they do this without threads. I want to see a real time graph at the
+</I>&gt;<i> same time while i am working on the same screen. What is the secret?
+</I>&gt;<i>
+</I>&gt;<i> Thanks
+</I>&gt;<i> Rushen
+</I>
+Here is an example of using multiprocessing (which is included
+in Python 2.6 and easy_installable in older Python versions)
+to print a spin bar while a computation is running:
+
+import sys, time
+import multiprocessing
+
+DELAY = 0.1
+DISPLAY = [ '|', '/', '-', '\\' ]
+
+def spinner_func(before='', after=''):
+    write, flush = sys.stdout.write, sys.stdout.flush
+    pos = -1
+    while True:
+        pos = (pos + 1) % len(DISPLAY)
+        msg = before + DISPLAY[pos] + after
+        write(msg); flush()
+        write('\x08' * len(msg))
+        time.sleep(DELAY)
+
+def long_computation():
+    # emulate a long computation
+    time.sleep(3)
+
+if __name__ == '__main__':
+    spinner = multiprocessing.Process(
+        None, spinner_func, args=('Please wait ... ', ''))
+    spinner.start()
+    try:
+        long_computation()
+        print 'Computation done'
+    finally:
+        spinner.terminate()
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message (by thread): <A HREF="525248.html">Will multithreading make python less popular?
+</A></li>
+	<LI>Next message (by thread): <A HREF="525288.html">Will multithreading make python less popular?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#525280">[ date ]</a>
+              <a href="thread.html#525280">[ thread ]</a>
+              <a href="subject.html#525280">[ subject ]</a>
+              <a href="author.html#525280">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://mail.python.org/mailman/listinfo/python-list">More information about the Python-list
+mailing list</a><br>
+</body></html>
